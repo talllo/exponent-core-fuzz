@@ -72,31 +72,31 @@ for raw in open(targets_path, encoding="utf-8"):
     if kind != "svm":
         raise SystemExit(f"unsupported target kind {kind!r}")
     lineages.append({
-        "Name": f"{crate}__{feature}",
+        "name": f"{crate}__{feature}",
         # P-0003 and P-0011 are already-written-up confirmed findings (issue-02 and
         # issue-06). Left unmuted they fire thousands of times on the SAME known
         # defect and bury every other property's first finding.
-        "Env": {"SCOUT_CHECK_MUTE": "P-0003,P-0011"},
-        "Confs": [{
-            "Name": "explore",
-            "Driver": {"Type": "crucible", "Params": {
-                "BinaryPathInBundle":    f"bin/{crate}/{feature}",
+        "env": {"SCOUT_CHECK_MUTE": "P-0003,P-0011"},
+        "confs": [{
+            "name": "explore",
+            "driver": {"type": "crucible", "params": {
+                "binary_path_in_bundle":    f"bin/{crate}/{feature}",
                 # The harness opens its program via a CWD-relative path, so it must
                 # run from bin/<crate>/ for programs/ and fixtures/ to resolve.
-                "HarnessRunDirInBundle": f"bin/{crate}",
-                "SymbolsPathInBundle":   f"symbols/{crate}.debug.so",
-                "SourcesPathInBundle":   "srcs",
-                "SourcesOriginalPath":   "programs/",
+                "harness_run_dir_in_bundle": f"bin/{crate}",
+                "symbols_path_in_bundle":   f"symbols/{crate}.debug.so",
+                "sources_path_in_bundle":   "srcs",
+                "sources_original_path":   "programs/",
             }},
-            "Architecture": {"Name": "amd64", "Extensions": []},
-            "MemoryKiB": 2097152, "Cores": 1,
-            "StallTimeMinutes": 0, "YieldTimeMinutes": 120,
+            "architecture": {"name": "amd64", "extensions": []},
+            "memory_kib": 2097152, "cores": 1,
+            "stall_time_minutes": 0, "yield_time_minutes": 120,
         }],
     })
 manifest = {
-    "Version": 3,
-    "Revision": {"Commit": commit, "Checkouts": {}},
-    "Lineages": lineages,
+    "version": 3,
+    "revision": {"commit": commit, "checkouts": {}},
+    "lineages": lineages,
 }
 print(json.dumps(manifest, indent=2))
 PY
